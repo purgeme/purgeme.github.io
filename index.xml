@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Purgeme</title><link>/</link><description>Recent content on Purgeme</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="/index.xml" rel="self" type="application/rss+xml"/><item><title>Godot Mediapipe Module</title><link>/posts/godotmediapipemodule/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>/posts/godotmediapipemodule/</guid><description>This is a module for the Godot game engine which allows using mediapipe solutions inside the game engine.
+With this module it is possible to use mediapipe solutions inside Godot. Currently only tracking solutions which return a NormalizedLandmarksList, like Holistic tracking.
+Currently only Linux is supported and tested, it can be built for windows if you have the required knowledge.
+Getting started: Building manually: First clone the repository or download zip from github:</description><content>&lt;p>This is a module for the Godot game engine which allows using mediapipe solutions inside the game engine.&lt;/p>
+&lt;p>With this module it is possible to use mediapipe solutions inside Godot. Currently only tracking solutions which return a NormalizedLandmarksList, like Holistic tracking.&lt;/p>
+&lt;p>Currently only Linux is supported and tested, it can be built for windows if you have the required knowledge.&lt;/p>
+&lt;h2 id="getting-started">Getting started:&lt;/h2>
+&lt;h3 id="building-manually">Building manually:&lt;/h3>
+&lt;p>First clone the repository or download zip from github:&lt;/p>
+&lt;pre tabindex="0">&lt;code>git clone https://github.com/purgeme/godot_mediapipe_module
+&lt;/code>&lt;/pre>&lt;p>Next, run the setup script:&lt;/p>
+&lt;pre tabindex="0">&lt;code>./setup.sh
+&lt;/code>&lt;/pre>&lt;p>Next, run the built script:&lt;/p>
+&lt;pre tabindex="0">&lt;code>./build.sh
+&lt;/code>&lt;/pre>&lt;p>Builds the engine. The generated binary is in &lt;code>godot/bin/&lt;/code>.&lt;/p>
+&lt;p>Before running the binary make sure to run: &lt;code>source envs&lt;/code> to setup the environment variables so that the binary is able to find the library or you can manually add the library to your system. The library is placed under &lt;code>library&lt;/code> directory.&lt;/p></content></item><item><title>Mediapipe C++ library</title><link>/posts/mediapipelibrary/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>/posts/mediapipelibrary/</guid><description>Mediapipe is a project by Google, it provides solutions for different types of tracking. This is basically a c++ library which exposes functions to utilize that library.
+The main purpose is to simplify the usage of mediapipe by abstracting a lot of stuff and to be able to use mediapipe in other projects which may use different build systems. With this it is also possible to build plugins/modules for game engines easily allowing use of tracking features inside games/applications built using them.</description><content>&lt;p>Mediapipe is a project by Google, it provides solutions for different types of tracking.
+This is basically a c++ library which exposes functions to utilize that library.&lt;/p>
+&lt;p>The main purpose is to simplify the usage of mediapipe by abstracting a lot of stuff and to be able to use mediapipe in other projects which may use different build systems. With this it is also possible to build plugins/modules for game engines easily allowing use of tracking features inside games/applications built using them.&lt;/p>
+&lt;p>For now, this has only been built and tested in Linux, more specifically Manjaro KDE ( Though the build and usage process is same for every distribution). Windows should also work and a lot of things should directly translate with the only major difference being the file extension from .so ( Linux ) to .dll ( Windows ) but it hasn&amp;rsquo;t yet been tested in it.&lt;/p>
+&lt;h2 id="getting-started">Getting started:&lt;/h2>
+&lt;h3 id="building-manually">Building manually:&lt;/h3>
+&lt;p>First clone the repository or download zip from github:&lt;/p>
+&lt;pre tabindex="0">&lt;code>git clone https://github.com/purgeme/mediapipe_cpp_lib
+&lt;/code>&lt;/pre>&lt;p>Next, run the setup script:&lt;/p>
+&lt;pre tabindex="0">&lt;code>./setup.sh
+&lt;/code>&lt;/pre>&lt;p>Next, run the built script:&lt;/p>
+&lt;pre tabindex="0">&lt;code>./build.sh
+&lt;/code>&lt;/pre>&lt;h3 id="download-models-and-graphs">Download models and graphs&lt;/h3>
+&lt;p>Run download_models.sh and extract_graphs.sh to download model and graph files in mediapipe_models and mediapipe_graphs directories respectively.&lt;/p>
+&lt;p>If familier with mediapipe and its graphs, you can also build and use your own graphs.&lt;/p>
+&lt;h3 id="using-the-library">Using the library:&lt;/h3>
+&lt;p>The library uses model files from mediapipe_models folder so it should be present in the parent folder from where gmod_api.h is being used.&lt;/p>
+&lt;p>To use the library in any C++ project, add the library to system or add path of library to LD_LIBRARY_PATH environment variable. Also, copy and import gmod_api.h, this provides all functions exposed in the library.&lt;/p>
+&lt;p>The data is returned as a void pointer ( this was done for performance reasons as otherwise it would require copying all data to a C++ array in the library ). The pointer needs to type-casted to required data type. These data types are imported from header files generated by mediapipe while compiling and are not provided directly.&lt;/p>
+&lt;p>These files are automatically copied after compilling the library into import_files directory. Since these files were compiled by mediapipe with specific version protobuf, make sure you have the same version installed on system or download it and add it to include directories while compiling your project.&lt;/p>
+&lt;p>Current version of protobuf: 3.19.1&lt;/p>
+&lt;p>Download link: &lt;a href="https://github.com/protocolbuffers/protobuf/releases/download/v3.19.1/protobuf-cpp-3.19.1.zip">https://github.com/protocolbuffers/protobuf/releases/download/v3.19.1/protobuf-cpp-3.19.1.zip&lt;/a>&lt;/p>
+&lt;p>( It&amp;rsquo;s a lot to do to just use the library, but a lot of these things will be automated later. )&lt;/p>
+&lt;h4 id="example">Example:&lt;/h4>
+&lt;p>Here we track face landmarks. A demo example is also provided in demo directory.&lt;/p>
+&lt;p>The landmarks in mediapipe are stored in NormalizedLandmarkList data type. First we include it:&lt;/p>
+&lt;pre tabindex="0">&lt;code>#include &amp;#34;mediapipe/framework/formats/landmark.pb.h&amp;#34;
+&lt;/code>&lt;/pre>&lt;p>Create IGMOD object. We will use this object to do the rest.&lt;/p>
+&lt;pre tabindex="0">&lt;code>IGMOD* test = CreateGMOD();
+&lt;/code>&lt;/pre>&lt;p>Set camera properties.&lt;/p>
+&lt;pre tabindex="0">&lt;code>test-&amp;gt;set_camera_props(1, 640, 480, 30);
+test-&amp;gt;set_camera(true);
+test-&amp;gt;set_overlay(false);
+&lt;/code>&lt;/pre>&lt;p>Create an observer for tracking.&lt;/p>
+&lt;pre tabindex="0">&lt;code>auto obs = test-&amp;gt;create_observer(&amp;#34;face_landmarks&amp;#34;);
+&lt;/code>&lt;/pre>&lt;p>Add callback functions. It is important to add callback functions for both presence and packet, even if they are empty.&lt;/p>
+&lt;pre tabindex="0">&lt;code>obs-&amp;gt;SetPresenceCallback([](class IObserver* observer, bool present){});
+obs-&amp;gt;SetPacketCallback([](class IObserver* observer){
+const mediapipe::NormalizedLandmarkList* data = (mediapipe::NormalizedLandmarkList*)(observer-&amp;gt;GetData());
+size_t message_type = observer-&amp;gt;GetMessageType();
+std::cout &amp;lt;&amp;lt; typeid(message_type).name() &amp;lt;&amp;lt; std::endl;
+std::cout &amp;lt;&amp;lt; data-&amp;gt;landmark(0).x() &amp;lt;&amp;lt; &amp;#34; ; &amp;#34; &amp;lt;&amp;lt; message_type &amp;lt;&amp;lt; std::endl;
+});
+&lt;/code>&lt;/pre>&lt;p>Start tracking. Here provide the graph file for tracking.&lt;/p>
+&lt;pre tabindex="0">&lt;code>test-&amp;gt;start(&amp;#34;mediapipe_graphs/holistic_tracking_cpu.pbtxt&amp;#34;);
+&lt;/code>&lt;/pre>&lt;p>To stop tracking properly:&lt;/p>
+&lt;pre tabindex="0">&lt;code>test-&amp;gt;stop();
+&lt;/code>&lt;/pre>&lt;h2 id="functions">Functions:&lt;/h2>
+&lt;p>All the exposed functions and classes are present in gmod_api.h file.&lt;/p>
+&lt;p>These are the function required for using the library and what they do:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;strong>CreateGMOD():&lt;/strong> Returns an object to be stored in variable of IGMOD type. This object is the main access point to all the functions in the library.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>start(char* filename):&lt;/strong> This function takes path to a mediapipe graph file ( .pbtxt ) and starts tracking for that graph. The tracking is started in a new thread so as to not interrupt the main thread because it runs in a while loop.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>stop():&lt;/strong> This function stops the tracking and kills the thread.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>create_observer(const char* stream_name):&lt;/strong> Creates, adds and returns an observer object which then observers data on the stream_name given to it.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>set_camera_props(int cam_id, int cam_resx, int cam_resy, int cam_fps):&lt;/strong> Takes and sets properties for the input webcam.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>get_camera():&lt;/strong> Gets if the camera view is enabled.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>set_camera():&lt;/strong> Sets the camera view should be enabled.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>get_overlay():&lt;/strong> Gets if the overlay view is enabled.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>set_overlay():&lt;/strong> Sets the overlay view should be enabled.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>SetPresenceCallback(std::function&amp;lt;void(class IObserver*, bool)&amp;gt; in_presence_callback):&lt;/strong> Takes a function pointer as input, this function will be run when the presence packet for the observers stream is recieved.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>SetPacketCallback(std::function&amp;lt;void(class IObserver*)&amp;gt; in_packet_callback):&lt;/strong> Takes a function pointer as input, this function will be run when the data packet for the observers stream is recieved.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>GetData():&lt;/strong> Gets the data for the observer&amp;rsquo;s stream as void pointer which can then be casted into the required data type.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="todo">TODO:&lt;/h2>
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> Improve documentation, make it clearer.&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> Create Releases.&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> Clean code.&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> Document data types and examples for each solution.&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> Test on windows.&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> GPU support.&lt;/li>
+&lt;/ul></content></item><item><title>OpenGL Paint</title><link>/posts/glpaint/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>/posts/glpaint/</guid><description>A simple paint application written in C++ using OpenGL.
+It provides basic functionalities like different shaped cursors and erasers, ability to select different colors as well as to save the image with keyboard shortcuts.
+To draw, click the left mouse button and move the mouse, release to stop drawing.
+Multiple brush shapes are accessible with right click menu.
+The current brush color is displayed on the left side.
+Keyboard shortcuts ( more like the only option ):</description><content>&lt;p>A simple paint application written in C++ using OpenGL.&lt;/p>
+&lt;p>It provides basic functionalities like different shaped cursors and erasers, ability to select different colors as well as to save the image with keyboard shortcuts.&lt;/p>
+&lt;p>To draw, click the left mouse button and move the mouse, release to stop drawing.&lt;/p>
+&lt;p>Multiple brush shapes are accessible with right click menu.&lt;/p>
+&lt;p>The current brush color is displayed on the left side.&lt;/p>
+&lt;p>Keyboard shortcuts ( more like the only option ):&lt;/p>
+&lt;pre>&lt;code>x to clear the screen.
++ to increase the brush size.
+- to decrease the brush size.
+h toggle making the bush shape hollow or filled ( not useful if intend to draw strokes with that brush ).
+s save the image as screenshot.jpg.
+0-6 move between different color presets.
+r increase the red value in the color.
+R decrease the red value in the color.
+g increase the green value in the color.
+G decrease the green value in the color.
+b increase the blue value in the color.
+B decrease the blue value in the color.
+&lt;/code>&lt;/pre>
+&lt;p>The ability to save the image is provided by the freeimage library and the image is saved as screenshot.jpeg in the project directory.&lt;/p>
+&lt;h3 id="dependencies">Dependencies:&lt;/h3>
+&lt;ul>
+&lt;li>g++ ( For Linux )&lt;/li>
+&lt;li>Visual Studio ( For Windows)&lt;/li>
+&lt;li>Windows.h ( For Windows )&lt;/li>
+&lt;li>FreeImage&lt;/li>
+&lt;li>FreeGLUT&lt;/li>
+&lt;/ul>
+&lt;h3 id="building">Building:&lt;/h3>
+&lt;p>First clone the git repository or download the zip from github:&lt;/p>
+&lt;pre tabindex="0">&lt;code>git clone https://github.com/purgeme/GL_Paint.git
+&lt;/code>&lt;/pre>&lt;p>Next, build the program:&lt;/p>
+&lt;pre tabindex="0">&lt;code>cd GL_Paint
+cd src
+g++ -o GL_Paint *.cpp -lglut -lGL -lGLU -lfreeimage
+&lt;/code>&lt;/pre>&lt;h3 id="running">Running:&lt;/h3>
+&lt;p>Pre-built binaries are provided in Distribution folder, or you can build it yourself.&lt;/p>
+&lt;h4 id="on-linux">On Linux:&lt;/h4>
+&lt;p>First make sure the compiled binary is executable:&lt;/p>
+&lt;pre tabindex="0">&lt;code>chmod +x GL_Paint
+&lt;/code>&lt;/pre>&lt;p>Then simple execute the binary:&lt;/p>
+&lt;pre tabindex="0">&lt;code>./GL_Paint
+&lt;/code>&lt;/pre>&lt;h4 id="on-windows">On Windows:&lt;/h4>
+&lt;p>On windows you can run it straight through Visual Studio or just run the pre-built executable GL_Paint.exe inside &lt;code>Distribution&lt;/code>.&lt;/p>
+&lt;h2 id="todo">TODO:&lt;/h2>
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> Add proper GUI elements&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> Add ability to select save location for screenshot&lt;/li>
+&lt;/ul></content></item></channel></rss>
